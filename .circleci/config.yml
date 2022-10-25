@@ -4,7 +4,7 @@ version: 2.1
 
 orbs:
   dt: cci-dep/dependency-tracking@0.0.1
-  node: circleci/node@5.0.0
+  node: circleci/node@5.0
 
 jobs:
   dependency-tracking:
