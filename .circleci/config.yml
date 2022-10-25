@@ -3,9 +3,23 @@
 version: 2.1
 
 orbs:
+  dt: cci-dep/dependency-tracking@0.0.1
   node: circleci/node@5.0.0
 
 jobs:
+  dependency-tracking:
+      docker:
+        - image: cimg/base:2021.04
+      steps:
+        - checkout
+        - attach_workspace:
+            at: .
+        - run: echo "your pipeline id is << pipeline.id  >>"
+        - dt/track:
+            pipeline_id: << pipeline.id >>
+            path: "package-lock.json"
+            revision: << pipeline.git.revision >>
+            vcs_url: << pipeline.project.git_url >>
   js-build:
     docker:
       - image: cimg/node:14.18
@@ -60,6 +74,7 @@ jobs:
 workflows:
   test-flow:
     jobs:
+      - dependency-tracking
       - js-build
       - php-lint
       - php-test:
